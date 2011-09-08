@@ -153,6 +153,7 @@ toplevel_label:
 
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -192,7 +193,6 @@ toplevel_label:
         case '(':
             parser->warn |= QUERYPARSE_WARN_PARENS_BOOLEAN; /*warn,fallthrough*/
         default:
-        case ASCII_CASE_EXTENDED:
             /* anything else we don't record in the word, but go to inword 
              * anyway (so we know when a string of junk characters occurred) */
             goto inword_label;
@@ -213,6 +213,7 @@ inword_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -230,7 +231,6 @@ inword_label:
             goto punc_label;
 
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore junk characters */
             break;
 
@@ -268,6 +268,7 @@ punc_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -287,7 +288,6 @@ punc_label:
 
         default:
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore junk characters */
             break;
 
@@ -326,6 +326,7 @@ inword_nostop_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -338,7 +339,6 @@ inword_nostop_label:
             break;
 
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore */
             break;
 
@@ -380,6 +380,7 @@ inword_nostop_punc_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -392,7 +393,6 @@ inword_nostop_punc_label:
             goto inword_nostop_label;
 
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore */
             break;
 
@@ -433,6 +433,7 @@ inword_exclude_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -445,7 +446,6 @@ inword_exclude_label:
             break;
 
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore */
             break;
 
@@ -487,6 +487,7 @@ inword_exclude_punc_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -499,7 +500,6 @@ inword_exclude_punc_label:
             break;
 
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore */
             break;
 
@@ -556,6 +556,7 @@ inor_label:
 
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -569,7 +570,6 @@ inor_label:
             goto inword_label;
             break;
 
-        case ASCII_CASE_EXTENDED:
         case ASCII_CASE_CONTROL:
             goto inword_label;
         
@@ -628,6 +628,7 @@ inand_label:
 
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -641,7 +642,6 @@ inand_label:
             goto inword_label;
             break;
 
-        case ASCII_CASE_EXTENDED:
         case ASCII_CASE_CONTROL:
             goto inword_label;
 
@@ -684,6 +684,7 @@ inphrase_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -709,7 +710,6 @@ inphrase_label:
 
         case ASCII_CASE_CONTROL:
         default:
-        case ASCII_CASE_EXTENDED:
             /* phrase word started */
             goto inphrase_word_label;
             break;
@@ -729,6 +729,7 @@ inphrase_word_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -765,7 +766,6 @@ inphrase_word_label:
             }
             break;
 
-        case ASCII_CASE_EXTENDED:
         case ASCII_CASE_CONTROL:
             /* ignore */
             break;
@@ -808,6 +808,7 @@ inphrase_word_punc_label:
             c = ASCII_TOLOWER(c);
         case ASCII_CASE_LOWER:
         case ASCII_CASE_DIGIT:
+        case ASCII_CASE_EXTENDED:
             /* push character onto word */
             if (*len < parser->maxwordlen) {
                 word[(*len)++] = c;
@@ -836,7 +837,6 @@ inphrase_word_punc_label:
             break;
 
         case ASCII_CASE_CONTROL:
-        case ASCII_CASE_EXTENDED:
             /* ignore */
             break;
 

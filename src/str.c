@@ -43,7 +43,7 @@ int str_cmp(const char *s1, const char *s2) {
         s2++;
     }
 
-    return (unsigned char) *s1 - (unsigned char) *s2;
+    return (char) *s1 - (char) *s2;
 }
 
 int str_ncmp(const char *s1, const char *s2, size_t size) {
@@ -54,7 +54,7 @@ int str_ncmp(const char *s1, const char *s2, size_t size) {
     }
 
     if (size) {
-        return (unsigned char) *s1 - (unsigned char) *s2;
+        return (char) *s1 - (char) *s2;
     } else {
         return 0;
     }
@@ -82,7 +82,7 @@ int str_nncmp(const char *s1, size_t size1, const char *s2, size_t size2) {
     }
 
     if (len) {
-        return (unsigned char) *s1 - (unsigned char) *s2;
+        return (char) *s1 - (char) *s2;
     } else {
         return def;
     }
@@ -463,8 +463,8 @@ int str_casecmp(const char *s1, const char *s2) {
         us2++;
     }
 
-    return (unsigned char) lookup[*us1 + 128] 
-      - (unsigned char) lookup[*us2 + 128];
+    return (char) lookup[*us1 + 128] 
+      - (char) lookup[*us2 + 128];
 }
 
 int str_ncasecmp(const char *s1, const char *s2, 
@@ -479,8 +479,8 @@ int str_ncasecmp(const char *s1, const char *s2,
     }
 
     if (size) {
-        return (unsigned char) lookup[*us1 + 128] 
-          - (unsigned char) lookup[*us2 + 128];
+        return (char) lookup[*us1 + 128] 
+          - (char) lookup[*us2 + 128];
     } else {
         return 0;
     }
