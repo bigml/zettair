@@ -1280,6 +1280,13 @@ enum docmap_ret docmap_get_location(struct docmap *dm,
         *bytes = dm->read.entry.bytes;
         *mtype = dm->read.entry.mtype;
         return DOCMAP_OK;
+    } else if ((dmret = traverse(dm, &dm->write, docno)) == DOCMAP_OK) {
+        *fileno = dm->write.entry.fileno;
+        *disk_offset_ptr = dm->write.entry.offset;
+        *flags = dm->write.entry.flags;
+        *bytes = dm->write.entry.bytes;
+        *mtype = dm->write.entry.mtype;
+        return DOCMAP_OK;
     } else {
         return dmret;
     }
