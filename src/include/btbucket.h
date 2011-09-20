@@ -24,7 +24,7 @@ extern "C" {
  * prefix_size give the prefix for this bucket.  prefix_size is written with the
  * size of the prefix accepted by the bucket on return. */
 void btbucket_new(void *btbucket, unsigned int bucketsize, 
-  unsigned int sib_fileno, unsigned int sib_offset, int leaf, void *prefix, 
+  unsigned int sib_fileno, unsigned long int sib_offset, int leaf, void *prefix, 
   unsigned int *prefix_size);
 
 /* get the sibling pointer for this bucket (assuming that its a leaf node) */
