@@ -162,23 +162,23 @@ static struct sentence *extract_finish(struct sentence *sent, struct persum *ps,
               && (space < str_len("</b>"))) {
                 sent->buflen--;
             }
-
-            /* end highlighting */
-            str_cpy(sent->buf + sent->buflen, "</b>");
-            sent->buflen += str_len("</b>");
         }
+
+        /* end highlighting */
+        str_cpy(sent->buf + sent->buflen, "</b>");
+        sent->buflen += str_len("</b>");
     }
 
     /* trim overly-long sentence term-by-term */
     while (sent->buflen > ps->summary_len) {
         sent->buflen--;
-        while (sent->buf[sent->buflen - 1] != ' ') {
+        while ((sent->buflen > 0) && sent->buf[sent->buflen - 1] != ' ') {
             sent->buflen--;
         }
     }
 
     /* remove superfluous whitespace from the end of the sentence */
-    while (sent->buf[sent->buflen - 1] == ' ') {
+    while ((sent->buflen > 0) && (sent->buf[sent->buflen - 1] == ' ')) {
         sent->buflen--;
     }
 
@@ -268,6 +268,7 @@ static struct sentence *extract(struct summarise *sum, struct persum *ps,
     struct conjunct *conj;      /* current query term, in query struct */
     enum mlparse_ret ret; 
     enum psettings_attr attr;
+    char sepch;
 
     /* note that because we potentially realloc sent, we *must* return it if we
      * modify it or else risk leaking memory */
@@ -307,6 +308,10 @@ static struct sentence *extract(struct summarise *sum, struct persum *ps,
             ps->termbuf[len] = '\0';
             str_strip(ps->termbuf + (ps->termbuf[0] == '/'));
             attr = psettings_type_find(sum->pset, ps->ptype, ps->termbuf);
+            if (title) {
+                assert(ps->title_len > 0);
+                ps->title[ps->title_len-1] = '\0';
+            }
             title = 0;
 
             /* change state based on tag index attribute */
@@ -417,18 +422,19 @@ static struct sentence *extract(struct summarise *sum, struct persum *ps,
         case MLPARSE_WORD | MLPARSE_CONT:
         case MLPARSE_WORD | MLPARSE_END:
             if (title) {
+                sepch = ((ret & MLPARSE_END) || (ret & MLPARSE_CONT))? 0 : ' ';
                 /* copy into title buffer, don't generate a sentence from it */
                 if (ps->title_len + len + 2 < ps->title_size) {
                     memcpy(ps->title + ps->title_len, ps->termbuf, len);
                     ps->title_len += len;
-                    ps->title[ps->title_len++] = ' ';
+                    ps->title[ps->title_len++] = sepch;
                 } else if (ps->title_len + 1 < ps->title_size) {
                     unsigned int tlen = ps->title_size - ps->title_len - 1;
                     memcpy(ps->title + ps->title_len, ps->termbuf, tlen);
                     ps->title_len += tlen;
                     assert(ps->title_len + 1 <= ps->title_size);
                     if (ps->title_len + 1 < ps->title_size) {
-                        ps->title[ps->title_len++] = ' ';
+                        ps->title[ps->title_len++] = sepch;
                     }
                     assert(ps->title_len + 1 == ps->title_size);
                 }
@@ -459,10 +465,14 @@ static struct sentence *extract(struct summarise *sum, struct persum *ps,
                 memcpy(sent->buf + sent->buflen, ps->termbuf, len);
             }
 
+            if (len > sum->max_termlen) {
+                len = 0;
+            }
+            
             /* strip and stem the term */
             ps->termbuf[len] = '\0';
             str_strip(ps->termbuf);
-            sum->stem(sum->stemmer, ps->termbuf);
+            if (sum->stem) sum->stem(sum->stemmer, ps->termbuf);
 
             if (chash_str_ptr_find(ps->terms, ps->termbuf, &found) 
               == CHASH_OK) {
@@ -901,8 +911,8 @@ enum summarise_ret summarise(struct summarise *sum, unsigned long int docno,
             if (i) {
                 if (heap[i - 1]->start_term + heap[i - 1]->terms 
                   != heap[i]->start_term) { 
-                    if (result->summary[heap_bytes - 1] != '.'
-                      || !isupper(heap[i]->buf[0])) {
+                    if (heap_bytes && (result->summary[heap_bytes - 1] != '.'
+                      || !isupper(heap[i]->buf[0]))) {
                         result->summary[heap_bytes++] = ' ';
                         result->summary[heap_bytes++] = '.';
                     }

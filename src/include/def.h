@@ -79,9 +79,9 @@
                                             * default */
 
 /* memory constants for 'big-and-fast' operation */
-#define BIG_TABLESIZE (8 * 1024 * 1024)
-#define BIG_PARSE_BUFFER (10 * 1024 * 1024)
-#define BIG_MEMORY_DEFAULT (200 * 1024 * 1024)
+#define BIG_TABLESIZE (16 * 1024 * 1024)
+#define BIG_PARSE_BUFFER (20 * 1024 * 1024)
+#define BIG_MEMORY_DEFAULT (400 * 1024 * 1024)
 
 /* how big term vectors are initially */
 #define INITVECLEN 8

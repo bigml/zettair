@@ -347,6 +347,7 @@ static unsigned int actual_remerge(struct index *idx, struct filep *in,
 
                             ve.size -= in->buflen;
                             in->offset += in->buflen;
+                            in->buflen = in->bufpos = 0;
                             assert(lseek(in->fd, 0, SEEK_CUR) 
                               == (ssize_t) in->offset);
                         } else {

@@ -658,7 +658,9 @@ enum mime_top_types mime_top_type(enum mime_types mtype) {
 /* FIXME: do this properly, using parsing-type stuff */
 enum mime_types mime_content_guess(const void *buf, unsigned int len) {
     const char *cbuf = buf;
-
+    if (len == 0) {
+        return MIME_TYPE_APPLICATION_OCTET_STREAM;
+    }
     if (len >= 4) {
         /* test for JPEG */
         if ((cbuf[0] == (char) 0xff) && (cbuf[1] == (char) 0xd8) 
