@@ -947,10 +947,11 @@ inmod_mod_label:
     }
     /* if we end in a mod, return as word */
     parser->warn |= QUERYPARSE_WARN_PARENS_UNMATCHED;
-    assert(*len);
-    word[*len] = '\0';
-    parser->state = ENDFILE;
-    return QUERYPARSE_WORD;
+    if (*len) {
+        word[*len] = '\0';
+        parser->state = ENDFILE;
+        return QUERYPARSE_WORD;
+    } else goto inmod_end_label;
 
 /* in the parameters of a modifier */
 inmod_label:
