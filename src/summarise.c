@@ -924,11 +924,10 @@ enum summarise_ret summarise(struct summarise *sum, unsigned long int docno,
                     result->summary[heap_bytes++] = ' ';
                 }
             }
+            if ((heap_bytes + heap[i]->buflen) >= result->summary_len) break;
             memcpy(result->summary + heap_bytes, heap[i]->buf, heap[i]->buflen);
             heap_bytes += heap[i]->buflen;
-            assert(heap_bytes < result->summary_len);
         }
-        assert(heap_bytes < result->summary_len);
         result->summary[heap_bytes] = '\0';
     }
 

@@ -21,18 +21,18 @@ extern unsigned long int bit_lbits[];
 /* bit_set sets bit number bit in var to val (0 is lsb), evaluating to the
  * result (var is not changed in place) */
 #define BIT_SET(var, bit, val) \
-  (assert(((bit) >= 0) && ((bit) <= (8 * sizeof(int)))), \
+  (assert(((bit) >= 0) && ((bit) <= (8 * sizeof(long)))), \
     (((var) & ~(1 << (bit))) | (!!(val) << (bit))))
 
 /* bit_toggle toggles bit number bit in var (0 is lsb), evaluating to
  * the result (var is not changed in place) */
 #define BIT_TOGGLE(var, bit) \
-  (assert(((bit) >= 0) && ((bit) <= (8 * sizeof(int)))), \
+  (assert(((bit) >= 0) && ((bit) <= (8 * sizeof(long)))), \
     ((var) ^ (1 << (bit))))
 
 /* bit_get returns bit number bit in var (0 is lsb) */
 #define BIT_GET(var, bit) \
-  (assert(((bit) >= 0) && ((bit) <= (8 * sizeof(int)))), \
+  (assert(((bit) >= 0) && ((bit) <= (8 * sizeof(long)))), \
     ((var) & (1 << (bit))))
 
 /* strength-reduced arithmetic */
@@ -53,7 +53,7 @@ extern unsigned long int bit_lbits[];
  * two (specified by pow) (pow must be between 0 and the wordsize of
  * your computer in bits - 1, else 0 is returned) */
 #define BIT_POW2(pow) \
-  (assert(((pow) >= 0) && ((pow) <= (8 * sizeof(int)))), \
+  (assert(((pow) >= 0) && ((pow) <= (8 * sizeof(long)))), \
     (unsigned int) (bit_lbits[(pow)] + 1))
 
 /* bit_log2 returns floor(log_2(num)) except if num is 0, in which case 0 is
@@ -69,7 +69,7 @@ unsigned int bit_log2(unsigned long int num);
 
 /* return the a mask for bits lower bits */
 #define BIT_LMASK(bits) \
-  (assert(((bits) >= 0) && ((bits) <= (8 * sizeof(int)))), \
+  (assert(((bits) >= 0) && ((bits) <= (8 * sizeof(long)))), \
     (unsigned int)(bit_lbits[(bits)]))
 
 /* pointer setting (FIXME: this version is non-portable) */
