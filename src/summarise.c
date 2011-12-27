@@ -561,6 +561,12 @@ static struct sentence *extract(struct summarise *sum, struct persum *ps,
                     ps->bytes_left = 0;
                 }
             } else {
+                /*
+                 * read error, we should return NULL, baby
+                 * because summarise() will call me forever if i return not null
+                 * currently, we modified summarise() to judge
+                 * sent->buflen <= 0 && sent->terms <=0
+                 */
                 return extract_finish(sent, ps, type, highlight);
             }
             break;
@@ -814,6 +820,7 @@ enum summarise_ret summarise(struct summarise *sum, unsigned long int docno,
 
         /* extract sentence */
         if ((next = extract(sum, &ps, type, query, space, occs))) {
+            if (next->buflen <= 0 && next->terms <= 0) break;
             /* got a sentence, score it and figure out whether to heap it */
             score(next, query);
 
